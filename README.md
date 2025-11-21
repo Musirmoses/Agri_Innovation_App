@@ -5,6 +5,9 @@ Empowering Farmers With Digital Tools for Real Agricultural Impact
 Download APK
 (Attach your APK in the GitHub Releases section)
 
+Run on terminal:
+flutter run --dart-define=SUPABASE_URL=https://zwgmpwtfnektqixvxflt.supabase.co --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3Z21wd3RmbmVrdHFpeHZ4Zmx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzODY4NjgsImV4cCI6MjA3ODk2Mjg2OH0.kMdH7A78CoYfbEc-zsnRPCWImtfXfcVqYVb5SzrWBuY
+
 Version: 1.0.0
 License: MIT
 
