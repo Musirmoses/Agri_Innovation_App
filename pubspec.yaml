@@ -19,6 +19,7 @@ dependencies:
   http: ^0.13.6              # optional for weather integration
   flutter_dotenv: ^5.1.0
   flutter_lints: ^5.0.0
+  url_launcher: ^6.3.2
 
 
 dev_dependencies:
