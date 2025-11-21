@@ -14,6 +14,9 @@ class MarketPriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cheapest = (supplier.prices ?? {}).entries.isEmpty
+        ? null
+        : supplier.prices!.entries.reduce((a, b) => a.value < b.value ? a : b);
     return Card(
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -33,6 +36,17 @@ class MarketPriceCard extends StatelessWidget {
                   color: AppColors.textPrimary,
                 ),
               ),
+              if (cheapest != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: Text(
+                    '${cheapest.key} : Ksh ${cheapest.value}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
 
               const SizedBox(height: 6),
 
@@ -73,7 +87,7 @@ class MarketPriceCard extends StatelessWidget {
                     ],
                   ),
                 );
-              })
+              }).toList(),
             ],
           ),
         ),
