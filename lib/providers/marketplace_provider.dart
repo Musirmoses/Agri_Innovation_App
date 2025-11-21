@@ -1,25 +1,48 @@
 import 'package:flutter/material.dart';
-
+import '../services/supabase_service.dart';
 import '../models/supplier.dart';
-import '../services/marketplace_service.dart';
 
 class MarketplaceProvider extends ChangeNotifier {
-  final MarketplaceService _service = MarketplaceService();
-
-  List<Supplier> suppliers = [];
+  final _client = SupabaseService().client;
   bool isLoading = false;
+  List<Supplier> suppliers = [];
 
   Future<void> loadSuppliers() async {
     isLoading = true;
     notifyListeners();
 
-    suppliers = await _service.fetchSuppliers();
+    try {
+      final data = await _client
+          .from('suppliers')
+          .select('*, seedlings(*)')
+          .order('name', ascending: true);
 
-    isLoading = false;
-    notifyListeners();
-  }
+      suppliers = (data as List<dynamic>).map((s) {
+        // seedlings will be a list of maps
+        final seedlings = (s['seedlings'] as List<dynamic>?)
+                ?.map((d) => {
+                      'crop': d['crop_name'],
+                      'price': d['price'],
+                      'qty': d['quantity_available']
+                    })
+                .toList() ??
+            [];
 
-  Future<List<Supplier>> findSuppliersForCrop(String crop) async {
-    return await _service.getSuppliersForCrop(crop);
+        return Supplier.fromMap({
+          'id': s['id'],
+          'name': s['name'],
+          'location': s['location'],
+          'phone': s['phone'],
+          'rating': s['rating'],
+          'crops': seedlings.map((e) => e['crop']).toList(),
+          'prices': {for (var e in seedlings) e['crop']: e['price']}
+        });
+      }).toList();
+    } catch (e) {
+      // optionally log
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }
